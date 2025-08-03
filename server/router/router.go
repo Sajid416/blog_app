@@ -1,0 +1,20 @@
+package router
+
+import (
+	"github.com/Sajid416/blog_app/controller"
+	"github.com/gofiber/fiber/v2"
+)
+
+// any function or variable should be capital letter in first letter.
+func SetUpRoutes(app *fiber.App) {
+	// list=> get
+	// add=> post
+	// update=> put
+	// delete=> delete
+	app.Get("/", controller.BlogList)
+	app.Get("/:id", controller.BlogDetails)
+	app.Post("/", controller.BlogCreate)
+	app.Put("/:id", controller.BlogUpdate)
+	app.Delete("/:id", controller.BlogDelete)
+
+}
