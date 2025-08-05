@@ -1,42 +1,74 @@
-import React, { useContext } from "react";
-import { NavLink, useLocation } from "react-router-dom";
-import { DataContext } from "../context/DataContext";
+import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
+import { DataContext } from './../context/DataContext';
 
 const Home = () => {
-  const { apiData, loading } = useContext(DataContext);
-  const location = useLocation();
-  
-  const list = [
-    { item: "All", url: "/all" },  // Keep as "/all" for data loading
-    { item: "Technology", url: "/technology" },
-    { item: "Food", url: "/food" },
-    { item: "Health", url: "/health" },
-    { item: "Education", url: "/education" },
-    { item: "Sports", url: "/sports" },
-    { item: "Travel", url: "/travel" },
-  ];
-
-  // Check if current route is home or "all" category
-  const isAllCategory = location.pathname === "/" || location.pathname === "/all";
-
+  const {apiData,loading}=useContext(DataContext)
   return (
-    <div>
-      <ul className="flex gap-10 pt-4 pb-2 text-sm text-gray-500 font-semibold ml-12 cursor-pointer">
-        {list.map((item, ind) => (
-          <li key={ind}>
-            <NavLink
-              to={item.url}
-              className={({ isActive }) =>
-                isActive || (item.url === "/all" && isAllCategory)
-                  ? "text-orange-500 underline font-semibold"
-                  : "transition-all duration-300 ease-in-out transform hover:scale-110 hover:text-violet-600"
-              }
-            >
-              {item.item}
-            </NavLink>
-          </li>
-        ))}
-      </ul>
+    <div className="bg-gray-50 min-h-screen text-gray-800">
+      {/* Hero Section */}
+      <section className="bg-gradient-to-r bg-gray-800 text-white py-20 px-6">
+        <div className="max-w-5xl mx-auto text-center">
+          <h1 className="text-5xl font-bold mb-4">Welcome to BlogVerse</h1>
+          <p className="text-xl">Discover stories, ideas, and insights that inspire.</p>
+          <Link
+            to="all"
+            className="mt-6 inline-block bg-white text-blue-700 font-semibold px-6 py-3 rounded-xl hover:bg-gray-200 transition"
+          >
+            Explore All Blogs
+          </Link>
+        </div>
+      </section>
+
+      {/* Blog Categories */}
+      <section className="py-10">
+        <div className="max-w-6xl mx-auto px-6">
+          <h2 className="text-3xl font-semibold mb-6">Browse by Category</h2>
+          <div className="grid grid-cols-2 md:grid-cols-6 gap-4 text-white ">
+            {['Technology', 'Food', 'Health', 'Education', 'Sports', 'Travel'].map((category, index) => (
+              <Link
+                key={index}
+                to={`/category/${category.toLowerCase()}`}
+                className="bg-gray-900 shadow-md hover:shadow-lg transition rounded-xl p-4 text-center font-medium text-lg"
+              >
+                {category}
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Latest Blogs */}
+      <section className="py-10 bg-white ">
+        <div className="max-w-5xl px-6 pb-4">
+          <h2 className="text-3xl font-semibold mb-6">Latest Blogs</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pb-10">
+            {apiData.slice(0,3).map((item,index) => (
+              <div
+                key={index}
+                className="bg-gray-100 rounded-xl shadow-md hover:shadow-xl transition"
+              > 
+                <img
+                  src={item.imgUrl}
+                  alt="Blog Cover"
+                  className="w-full h-25 object-cover"
+                />
+                <h3 className="text-xl font-semibold mb-2 ml-2">{item.title}</h3>
+                <p className='text-orange-400 ml-2'>{item.category}</p>
+                <p className="text-sm text-gray-600 mb-3 line-clamp-2 ml-2">
+                  {item.details}
+                </p>
+                <Link
+                  to={"/"}
+                  className="text-blue-600 hover:underline font-medium ml-2 pb-4"
+                >
+                  Read More →
+                </Link>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
     </div>
   );
 };

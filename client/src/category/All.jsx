@@ -1,11 +1,15 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { DataContext } from '../context/DataContext';
+  import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-
+import SideBar from '../pages/SideBar';
+import DetailsPage from './DetailsPage';
 const All = () => {
   const { apiData, loading } = useContext(DataContext);
+   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [showComponent,setShowComponent]=useState(false)
 
   const blogsPerPage = 9;
 
@@ -33,6 +37,10 @@ const All = () => {
   const goToPrevPage = () => {
     if (currentPage > 1) setCurrentPage((prev) => prev - 1);
   };
+   const handleClick = () => {
+    navigate('/details', { state: { apiData } });
+  };
+
 
   if (loading) {
     return (
@@ -53,7 +61,7 @@ const All = () => {
   return (
     <div className="bg-gray-100 min-h-screen py-6">
       {/* Category Filter */}
-      <div className="flex justify-center gap-4 mb-6 cursor-pointer">
+      <div className="flex justify-center flex-wrap gap-3 mb-6 cursor-pointer">
         {['All', 'Technology', 'Food', 'Health', 'Education', 'Sports', 'Travel'].map((cat) => (
           <button
             key={cat}
@@ -68,7 +76,7 @@ const All = () => {
           </button>
         ))}
       </div>
-
+      
       {/* Add Blog Button */}
       <div className="ml-10 mb-5">
         <Link
@@ -79,55 +87,75 @@ const All = () => {
         </Link>
       </div>
 
-      {/* Blog Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 px-10 font-roboto-serif">
-        {currentBlogs.length === 0 ? (
-          <p className="text-gray-500">No blogs found in this category.</p>
-        ) : (
-          currentBlogs.map((record, index) => (
-            <div
-              key={index}
-              className="bg-white rounded-xl shadow hover:shadow-lg transition duration-300 overflow-hidden"
-            >
-              <img
-                src={record.imgUrl}
-                alt="Blog Cover"
-                className="w-full h-36 object-cover"
-              />
-              <div className="p-3">
-                <span className="text-xs font-semibold text-blue-600 uppercase tracking-wide">
-                  {record.category}
-                </span>
-                <h2 className="text-base font-bold text-gray-900 mt-0.5 hover:text-blue-700 transition">
-                  {record.title}
-                </h2>
-                <p className="text-sm text-gray-600 mt-1 line-clamp-2">
-                  {record.details}
-                </p>
-                <Link to={`blog/${record.id}`}>
-                  <button className="mt-2 px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition">
-                    Read More →
-                  </button>
-                </Link>
-                <div className="flex items-center mt-3">
-                  <img
-                    src={record.authorImg}
-                    alt="Author"
-                    className="w-7 h-7 rounded-full object-cover mr-2"
-                  />
+      {/* Blog Grid + Sidebar */}
+      <div className="flex flex-col lg:flex-row gap-6 px-10">
+        {/* Blog Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
+          {currentBlogs.length === 0 ? (
+            <p className="text-gray-500">No blogs found in this category.</p>
+          ) : (
+            currentBlogs.map((record, index) => (
+              <div
+                key={index}
+                className="flex flex-col h-[400px] bg-white rounded-xl shadow hover:shadow-lg transition duration-300 overflow-hidden"
+              >
+                {/* Image */}
+                <img
+                  src={record.imgUrl}
+                  alt="Blog Cover"
+                  className="w-full h-36 object-cover"
+                />
+
+                {/* Content */}
+                <div className="p-4 flex flex-col flex-1">
                   <div>
-                    <p className="text-sm font-medium text-gray-800">
-                      {record.authorName}
+                    <span className="text-xs font-semibold text-blue-600 uppercase tracking-wide">
+                      {record.category}
+                    </span>
+                    <h2 className="text-base font-bold text-gray-900 mt-1 hover:text-blue-700 transition">
+                      {record.title}
+                    </h2>
+                    <p className="text-sm text-gray-600 mt-1 line-clamp-2">
+                      {record.details}
                     </p>
-                    <p className="text-xs text-gray-500">
-                      {new Date(record.created_at).toLocaleDateString()}
-                    </p>
+                  </div>
+
+                  {/* Footer */}
+                  <div className="mt-2 pt-2">
+                  
+                      <button className="px-3 py-1 cursor-pointer bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition" onClick={()=>handleClick}>
+                        Read More →
+                       
+                      </button>
+                   
+                    
+
+                    <div className="flex items-center mt-3">
+                      <img
+                        src={record.authorImg}
+                        alt="Author"
+                        className="w-7 h-7 rounded-full object-cover mr-2"
+                      />
+                      <div>
+                        <p className="text-sm font-medium text-gray-800">
+                          {record.authorName}
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          {new Date(record.created_at).toLocaleDateString()}
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))
-        )}
+            ))
+          )}
+        </div>
+
+        {/* Sidebar */}
+        <div className="w-full lg:w-1/4">
+          <SideBar />
+        </div>
       </div>
 
       {/* Pagination */}
@@ -138,7 +166,7 @@ const All = () => {
           className={`px-3 py-1 rounded border ${
             currentPage === 1
               ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
-              : 'bg-white text-gray-700 hover:bg-blue-100'
+              : 'bg-white text-gray-700 hover:bg-blue-100 cursor-pointer'
           }`}
         >
           Previous
@@ -150,7 +178,7 @@ const All = () => {
             className={`px-3 py-1 rounded ${
               page === currentPage
                 ? 'bg-blue-600 text-white'
-                : 'bg-white text-gray-700 border'
+                : 'bg-white text-gray-700 border cursor-pointer'
             }`}
             onClick={() => setCurrentPage(page)}
           >
@@ -164,7 +192,7 @@ const All = () => {
           className={`px-3 py-1 rounded border ${
             currentPage === totalPages
               ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
-              : 'bg-white text-gray-700 hover:bg-blue-100'
+              : 'bg-white text-gray-700 hover:bg-blue-100 cursor-pointer'
           }`}
         >
           Next

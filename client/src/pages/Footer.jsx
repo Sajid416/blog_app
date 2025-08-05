@@ -1,52 +1,48 @@
-import React from 'react'
-import { FiYoutube } from "react-icons/fi";
-import { IoLogoWhatsapp } from "react-icons/io5";
-import { FaLinkedin } from "react-icons/fa";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn } from 'react-icons/fa';
+
 const Footer = () => {
-  const list=["Home","Blog","About","Contact"]
   return (
-    <div className='min-h-fit bg-violet-600 flex justify-between'>
-      <ul className='flex justify-baseline gap-4 pl-12 text-amber-50 font-semibold py-5'>
-        {
-          list.map((item,ind)=>(
-            <li key={ind}>
-              {item}
-            </li>
-          ))
-        }
-      </ul>
-      <div className='flex flex-col text-lg text-amber-50 font-semibold pr-45 py-5 items-center'>
-        <p>Connect With US</p>
-        <div className="flex justify-center gap-3">
-        {/* YouTube */}
-        <a
-          href="#"
-          className="bg-white rounded-full p-4 shadow-lg text-red-600 hover:scale-110 hover:shadow-2xl transition-all duration-300"
-        >
-          <FiYoutube size={24} />
-        </a>
+    <footer className="bg-gray-900 text-white py-10">
+      <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
+        {/* Logo and Tagline */}
+        <div>
+          <h2 className="text-2xl font-bold mb-2">BlogVerse</h2>
+          <p className="text-sm text-gray-400">
+            A universe of where diverse ideas and stories come alive through engaging blog posts. It connects readers with insightful content across tech, food, lifestyle, and more. Explore, learn, and share your passion with BlogVerse!
+          </p>
+        </div>
 
-        {/* WhatsApp */}
-        <a
-          href="#"
-          className="bg-white rounded-full p-4 shadow-lg text-green-600 hover:scale-110 hover:shadow-2xl transition-all duration-300"
-        >
-          <IoLogoWhatsapp size={24} />
-        </a>
+        {/* Quick Links */}
+        <div>
+          <h3 className="text-lg font-semibold mb-3">Quick Links</h3>
+          <ul className="space-y-2 text-sm">
+            <li><Link to="/" className="hover:underline text-gray-300">Home</Link></li>
+            <li><Link to="/all" className="hover:underline text-gray-300">All Blogs</Link></li>
+            <li><Link to="/about" className="hover:underline text-gray-300">About Us</Link></li>
+            <li><Link to="/contact" className="hover:underline text-gray-300">Contact</Link></li>
+          </ul>
+        </div>
 
-        {/* LinkedIn */}
-        <a
-          href="#"
-          className="bg-white rounded-full p-4 shadow-lg text-blue-700 hover:scale-110 hover:shadow-2xl transition-all duration-300"
-        >
-          <FaLinkedin size={24} />
-        </a>
-    
+        {/* Social Media */}
+        <div>
+          <h3 className="text-lg font-semibold mb-3">Follow Us</h3>
+          <div className="flex gap-4 text-gray-300 text-xl">
+            <a href="#" className="hover:text-white"><FaFacebookF /></a>
+            <a href="#" className="hover:text-white"><FaTwitter /></a>
+            <a href="#" className="hover:text-white"><FaInstagram /></a>
+            <a href="#" className="hover:text-white"><FaLinkedinIn /></a>
+          </div>
+        </div>
       </div>
-      </div>
-    </div>
-    
-  )
-}
 
-export default Footer
+      {/* Copyright */}
+      <div className="mt-10 border-t border-gray-700 pt-6 text-center text-sm text-gray-500">
+        © {new Date().getFullYear()} BlogVerse. All rights reserved.
+      </div>
+    </footer>
+  );
+};
+
+export default Footer;

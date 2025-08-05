@@ -4,13 +4,14 @@ import { FaFacebook } from "react-icons/fa6";
 import { CiTwitter } from "react-icons/ci";
 import { FaWhatsapp } from "react-icons/fa";
 import { FaArrowRightLong } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const list = [
-    { item: "Home", url: "all" },
+    { item: "Home", url: "/" },
     { item: "Services", url: "services" },
     { item: "About", url: "about" },
-    { item: "Blogs", url: "blog/:id" },
+    { item: "Blogs", url: "all" },
     { item: "Contact", url: "contact" },
   ];
   return (
@@ -47,23 +48,7 @@ const Navbar = () => {
           </button>
         </div>
       </div>
-      <div className="text-white max-w-2xl mx-auto h-40 flex items-center justify-center text-center px-4">
-        <div>
-          <h1 className="text-4xl font-bold mb-4">
-            Welcome To Our Blog Website
-          </h1>
-          <p className="mb-4 text-sm">
-            Start your Blog today and join a community of writers and readers
-            who are passionate about sharing their stories and ideas. We offer
-            everything you need to get started, from helpful tips and tutorials.
-          </p>
-
-          <div className="flex items-center justify-center gap-2 text-md leading-none mb-3">
-            <span>Learn more</span>
-            <FaArrowRightLong className="mt-[2px]" />
-          </div>
-        </div>
-      </div>
+      
     </div>
   );
 };
