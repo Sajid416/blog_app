@@ -13,7 +13,7 @@ const SideBar = () => {
            apiData.slice(0,5).map((item,index)=>(
              <div className='border-b-1 border-b-gray-500'>
                <h1 className='font-semibold text-gray-800'>{item.title}</h1>
-               <Link to={'/'}>
+               <Link to={`/details/${item.id}`}>
                 <button className='p-1.5 text-sm text-blue-500 font-semibold cursor-pointer hover:text-blue-400'>
                 Read More → 
               </button>
@@ -32,7 +32,7 @@ const SideBar = () => {
             apiData.slice(5,10).map((item,index)=>(
                 <div className='border-b-1 border-b-gray-500'>
                <h1 className='font-semibold text-gray-800'>{item.title}</h1>
-               <Link to={'/'}>
+               <Link to={`/details/${item.id}`}>
                 <button className='p-1.5 text-sm  text-blue-500 font-semibold cursor-pointer hover:text-blue-400'>
                 Read More → 
               </button>

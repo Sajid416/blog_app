@@ -1,16 +1,11 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { DataContext } from '../context/DataContext';
-  import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import SideBar from '../pages/SideBar';
-import DetailsPage from './DetailsPage';
 const All = () => {
   const { apiData, loading } = useContext(DataContext);
-   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState('all');
-  const [showComponent,setShowComponent]=useState(false)
-
   const blogsPerPage = 9;
 
   const filteredData =
@@ -37,10 +32,7 @@ const All = () => {
   const goToPrevPage = () => {
     if (currentPage > 1) setCurrentPage((prev) => prev - 1);
   };
-   const handleClick = () => {
-    navigate('/details', { state: { apiData } });
-  };
-
+ 
 
   if (loading) {
     return (
@@ -122,13 +114,11 @@ const All = () => {
 
                   {/* Footer */}
                   <div className="mt-2 pt-2">
-                  
-                      <button className="px-3 py-1 cursor-pointer bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition" onClick={()=>handleClick}>
+                    <Link to={`/details/${record.id}`}>
+                      <button className="px-3 py-1 cursor-pointer bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition">
                         Read More →
-                       
                       </button>
-                   
-                    
+                    </Link>
 
                     <div className="flex items-center mt-3">
                       <img

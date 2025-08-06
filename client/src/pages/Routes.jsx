@@ -17,12 +17,9 @@ const router=createBrowserRouter([
             index:true,
             Component:Home,
             },
-            {path:"details",
-             Component:DetailsPage,
-            },
              {
-            path:"blog/:id",
-            Component:Blog,
+            path:"/details/:id",
+            Component:DetailsPage,
             }, 
              {
               path:"services",

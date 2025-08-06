@@ -28,7 +28,7 @@ const Home = () => {
             {['Technology', 'Food', 'Health', 'Education', 'Sports', 'Travel'].map((category, index) => (
               <Link
                 key={index}
-                to={`/category/${category.toLowerCase()}`}
+                to={`/details/${category.id}`}
                 className="bg-gray-900 shadow-md hover:shadow-lg transition rounded-xl p-4 text-center font-medium text-lg"
               >
                 {category}
@@ -59,7 +59,7 @@ const Home = () => {
                   {item.details}
                 </p>
                 <Link
-                  to={"/"}
+                  to={`/details/${item.id}`}
                   className="text-blue-600 hover:underline font-medium ml-2 pb-4"
                 >
                   Read More →
