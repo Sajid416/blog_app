@@ -7,8 +7,8 @@ const Footer = () => {
     <footer className="bg-gray-900 text-white py-10">
       <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
         {/* Logo and Tagline */}
-        <div>
-          <h2 className="text-2xl font-bold mb-2">BlogVerse</h2>
+        <div className=''>
+          <h2 className="text-2xl font-bold mb-2 font-pacifico">BlogVerse</h2>
           <p className="text-sm text-gray-400">
             A universe of where diverse ideas and stories come alive through engaging blog posts. It connects readers with insightful content across tech, food, lifestyle, and more. Explore, learn, and share your passion with BlogVerse!
           </p>

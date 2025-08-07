@@ -17,7 +17,7 @@ const Navbar = () => {
   return (
     <div className="max-w-full font-roboto-serif bg-black">
       <div className="max-w-full px-10 py-6 flex justify-between items-center ">
-        <h1 className=" text-3xl text-amber-50 text-center py-2">
+        <h1 className=" text-3xl text-amber-50 text-center py-2 font-pacifico">
           Blog<span className="text-orange-600">Verse</span>
         </h1>
 
