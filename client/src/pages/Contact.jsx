@@ -1,16 +1,26 @@
-import React from "react";
+import React, { useRef } from "react";
 import img from "../assets/img/contact.jpg";
 import { useForm } from "react-hook-form";
+import emailjs from '@emailjs/browser';
+
 
 const Contact = () => {
-  const {
-    register,
-    formState:{errors},
-    reset,
-    handleSubmit
-  }=useForm()
-  const onSubmit= async(data)=>{
+  const form=useRef();
 
+  const sendEmail=(e)=>{
+    e.preventDefault();
+    emailjs.sendEmail("service_b641t1g","template_ijbip7j",
+      form.current,
+      "zzEyGwvrfoRmCDL9V"
+    )
+    .then(()=>{
+      alert("Email send Successfully")
+      form.current.reset()
+    })
+    .catch((err)=>{
+      console.error(err)
+      alert("Something went wrong")
+    })
   }
 
   return (
@@ -25,7 +35,7 @@ const Contact = () => {
           </div>
           <div>
             <form
-              onSubmit={handleSubmit(onSubmit)}
+              onSubmit={sendEmail}
               className="flex flex-col gap-5 pl-15 w-full max-w-sm"
             >
               <div className="flex flex-col gap-2">
@@ -38,7 +48,7 @@ const Contact = () => {
                 <input
                   type="text"
                   id="cName"
-                  {...register("cName"),{required:true}}
+                  {...register("cName",{required:true})}
                   aria-invalid={errors.cName? "true":"false"}
                   name="cName"
                   placeholder="Enter Your Name"
