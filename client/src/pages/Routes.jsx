@@ -8,6 +8,8 @@ import Add from './Add';
 import Services from './Services';
 import All from '../category/All';
 import DetailsPage from '../category/DetailsPage';
+import Login from '../auth/Login';
+import Register from '../auth/Register';
 const router=createBrowserRouter([
     {
         path:"/",
@@ -40,7 +42,15 @@ const router=createBrowserRouter([
             {
                 path:"all",
                 Component:All,
-            },           
+            },  
+            {
+                path:"login",
+                Component:Login,
+            },
+            {
+                path:"/register",
+                Component:Register,
+            }        
           
            ]
     },
