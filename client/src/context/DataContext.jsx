@@ -5,6 +5,13 @@ export const DataContext=createContext()
 export const DataProvider=({children})=>{
     const [apiData,setApiData]=useState([])
     const [loading,setLoading]=useState(true)
+    const [isLoggedIn,setIsLoggedIn]=useState(false)
+
+   useEffect(()=>{
+    const token=localStorage.getItem("token")
+     setIsLoggedIn(!!token)
+   },[])
+
     useEffect(()=>{
         const fetchData=async()=>{
             try{
@@ -27,7 +34,7 @@ export const DataProvider=({children})=>{
         fetchData()
     },[]);
     return(
-        <DataContext.Provider value={{apiData,loading}}>
+        <DataContext.Provider value={{apiData,loading,isLoggedIn,setIsLoggedIn}}>
           {children}
         </DataContext.Provider>
     )
