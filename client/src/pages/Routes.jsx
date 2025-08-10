@@ -10,6 +10,7 @@ import All from '../category/All';
 import DetailsPage from '../category/DetailsPage';
 import Login from '../auth/Login';
 import Register from '../auth/Register';
+import Logout from '../auth/LogoutButton';
 const router=createBrowserRouter([
     {
         path:"/",
@@ -50,7 +51,11 @@ const router=createBrowserRouter([
             {
                 path:"/register",
                 Component:Register,
-            }        
+            },
+            {
+                path:"logout",
+                Component:Logout,
+            }       
           
            ]
     },

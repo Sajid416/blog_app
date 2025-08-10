@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
+  const navigate=useNavigate()
   const {
     register,
     formState: { errors },
@@ -26,9 +28,10 @@ const Register = () => {
       {
         alert("Registration Successful")
         reset()
+        navigate("/login",{replace:true})
       }
       else{
-        alert(res.msg||"Registration Failed")
+        alert(result.msg||"Registration Failed")
       }
     }
     catch(error){
@@ -230,11 +233,9 @@ const Register = () => {
               </p>
             )}
           </div>
-          <div className="w-full bg-blue-500 px-4 py-2 rounded-xl">
-            <p className="  text-center text-white font-semibold cursor-pointer">
-              Sign Up
-            </p>
-          </div>
+          <button type="submit" className="w-full bg-blue-500 px-4 py-2 rounded-xl text-center text-white font-semibold cursor-pointer">            
+              Sign Up          
+          </button>
         </form>
       </div>
     </div>

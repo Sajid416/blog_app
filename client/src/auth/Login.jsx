@@ -1,13 +1,16 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { DataContext } from "../context/DataContext";
 
 const Login = () => {
-  const [passwordError, setPasswordError] = useState("");
-
+  const [user,setUser]=useState(false)
+  const navigate=useNavigate()
+  const {setIsLoggedIn}=useContext(DataContext)
   const {
     register,
     formState: { errors },
+    reset,
     handleSubmit,
   } = useForm();
 
@@ -19,13 +22,38 @@ const Login = () => {
   };
 
   const onSubmit = async (data) => {
-    console.log("Form submitted:", data);
+    try{
+      const res=await fetch("http://localhost:8001/login",{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify(data)
+
+      })
+      const result=await res.json()
+      if(res.ok){
+        localStorage.setItem("token",result.token)
+         alert("Login Successful")
+         setIsLoggedIn(true)
+         reset()
+         navigate("/",{replace:true})
+         setUser(true)
+      }
+      else{
+        console.log("error",result.error)
+        alert(result.msg||"Login Failed")
+      }
+    }
+    catch(error){
+      console.error("Login Error:",error)
+      alert("Something went wrong")
+    }
+
   };
 
   return (
     <div className="w-full p-10 pt-10 flex items-center justify-center">
       <div className="w-[380px] max-w-[400px] flex flex-col items-center justify-center p-5 gap-5 shadow-xl border border-gray-200 rounded-2xl">
-        <h1 className="font-bold text-gray-900 text-2xl">Login</h1>
+        <h1 className="font-bold text-gray-900 text-3xl">Login</h1>
 
         <form onSubmit={handleSubmit(onSubmit)} autoComplete="off"  className="flex flex-col gap-3 w-full">
           {/* Email */}

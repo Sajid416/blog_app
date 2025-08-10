@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { FaFacebook } from "react-icons/fa6";
 import { CiTwitter } from "react-icons/ci";
@@ -6,11 +6,14 @@ import { FaWhatsapp } from "react-icons/fa";
 
 import { FaArrowRightLong } from "react-icons/fa6";
 import { Link } from "react-router-dom";
+import { DataContext } from "../context/DataContext";
+import Logout from '../auth/LogoutButton';
+import LogoutButton from './../auth/LogoutButton';
 
 const ProfileDropdown=()=>{
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
-
+  
   // Close dropdown if clicked outside
   useEffect(() => {
     function handleClickOutside(event) {
@@ -61,12 +64,12 @@ const ProfileDropdown=()=>{
             >
               myBlog
             </a>
-            <a
-              href="#"
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-            >
-              Logout
-            </a>
+            <div
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"            
+            >          
+              <LogoutButton/>           
+            </div>
+            
           </div>
         </div>
       )}
@@ -76,7 +79,7 @@ const ProfileDropdown=()=>{
 
 
 const Navbar = () => {  
-  const [user, setUser] = useState(null);
+  const {isLoggedIn}=useContext(DataContext)
   const list = [
     { item: "Home", url: "/" },
     { item: "Services", url: "services" },
@@ -113,7 +116,7 @@ const Navbar = () => {
             <CiTwitter />
             <FaWhatsapp />
           </div>
-          {user === null ? (
+          {!isLoggedIn ? (
             <div>
               <Link to="login">
               <button className="bg-orange-500 text-white font-semibold cursor-pointer rounded-md hover:bg-orange-400 transition px-3 py-1">
