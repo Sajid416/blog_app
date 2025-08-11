@@ -1,7 +1,6 @@
-import { BrowserRouter, createBrowserRouter } from 'react-router-dom';
+import { BrowserRouter, createBrowserRouter, Outlet } from 'react-router-dom';
 import Home from './Home';
 import App from '../App';
-import Blog from './Blog';
 import About from './About';
 import Contact from './Contact';
 import Add from './Add';
@@ -10,7 +9,7 @@ import All from '../category/All';
 import DetailsPage from '../category/DetailsPage';
 import Login from '../auth/Login';
 import Register from '../auth/Register';
-import Logout from '../auth/LogoutButton';
+import PrivateRoute from '../context/PrivateRoute';
 const router=createBrowserRouter([
     {
         path:"/",
@@ -51,11 +50,33 @@ const router=createBrowserRouter([
             {
                 path:"/register",
                 Component:Register,
-            },
+            },   
             {
-                path:"logout",
-                Component:Logout,
-            }       
+                path:"/blog",
+                Component:(
+                    <PrivateRoute>
+                    <Outlet/>
+                    </PrivateRoute>
+                ),
+                children:[
+                    {
+                        path:"create",
+                        Component:CreateBlog,
+                    },
+                    {
+                        path:"myblog",
+                        Component:MyBlog,
+                    },
+                    {
+                        path:"/update",
+                        Component:UpdateBlog,
+                    },
+                    {
+                        path:"/delete",
+                        Component:DeleteBlog,
+                    }
+                ]
+            }         
           
            ]
     },
