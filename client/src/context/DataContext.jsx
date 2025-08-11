@@ -9,7 +9,25 @@ export const DataProvider=({children})=>{
 
    useEffect(()=>{
     const token=localStorage.getItem("token")
-     setIsLoggedIn(!!token)
+     if (token) {
+      try {
+        // Decode token without verifying signature
+        const payload = JSON.parse(atob(token.split(".")[1]));
+        const now = Math.floor(Date.now() / 1000); // current time in seconds
+
+        if (payload.exp && payload.exp > now) {
+          setIsLoggedIn(true);
+        } else {
+          // Token expired
+          localStorage.removeItem("token");
+          setIsLoggedIn(false);
+        }
+      } catch (error) {
+        console.error("Invalid token", error);
+        localStorage.removeItem("token");
+        setIsLoggedIn(false);
+      }
+    }
    },[])
 
     useEffect(()=>{
