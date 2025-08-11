@@ -2,6 +2,7 @@ package router
 
 import (
 	"github.com/Sajid416/blog_app/controller"
+	"github.com/Sajid416/blog_app/middleware"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -13,8 +14,10 @@ func SetUpRoutes(app *fiber.App) {
 	// delete=> delete
 	app.Get("/", controller.BlogList)
 	app.Get("/:id", controller.BlogDetails)
-	app.Post("/", controller.BlogCreate)
-	app.Put("/:id", controller.BlogUpdate)
-	app.Delete("/:id", controller.BlogDelete)
+	private := app.Group("/")
+	private.Use(middleware.Authenticate)
+	private.Post("/", controller.BlogCreate)
+	private.Put("/:id", controller.BlogUpdate)
+	private.Delete("/:id", controller.BlogDelete)
 
 }
