@@ -12,3 +12,7 @@ type Blog struct {
 	AuthorName string    `json:"authorName" gorm:"not null;column:authorName;size:255"`
 	CreatedAt  time.Time `gorm:"type:datetime;not null" json:"created_at"`
 }
+type User struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
