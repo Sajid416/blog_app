@@ -11,7 +11,7 @@ const SideBar = () => {
       <div className='flex flex-col gap-3'>
          {
            apiData.slice(0,5).map((item,index)=>(
-             <div className='border-b-1 border-b-gray-500'>
+             <div className='border-b-1 border-b-gray-500' key={index}>
                <h1 className='font-semibold text-gray-800'>{item.title}</h1>
                <Link to={`/details/${item.id}`}>
                 <button className='p-1.5 text-sm text-blue-500 font-semibold cursor-pointer hover:text-blue-400'>

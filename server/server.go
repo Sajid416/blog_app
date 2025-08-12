@@ -24,10 +24,11 @@ func main() {
 	}
 	defer sqlDB.Close()
 	app := fiber.New()
+	app.Static("/uploads", "./uploads")
 	app.Use(cors.New(cors.Config{
 		AllowOrigins: "*",
 		AllowMethods: "GET,POST,PUT,DELETE,OPTIONS",
-		AllowHeaders: "Origin, Content-Type, Accept",
+		AllowHeaders: "Origin, Content-Type, Accept,Authorization",
 	}))
 	router.SetUpRoutes(app)
 	app.Listen(":8080")

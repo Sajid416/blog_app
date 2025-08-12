@@ -1,7 +1,10 @@
 package controller
 
 import (
+	"fmt"
 	"log"
+	"os"
+	"path/filepath"
 	"time"
 
 	"github.com/Sajid416/blog_app/database"
@@ -130,4 +133,35 @@ func BlogDelete(c *fiber.Ctx) error {
 	context["Message"] = "Data deleted successfully"
 	c.Status(200)
 	return c.JSON(context)
+}
+
+func UploadImage(c *fiber.Ctx) error {
+	file, err := c.FormFile("image")
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "No file uploaded",
+		})
+	}
+
+	// Ensure uploads folder exists
+	if _, err := os.Stat("./uploads"); os.IsNotExist(err) {
+		os.Mkdir("./uploads", os.ModePerm)
+	}
+
+	// Create unique filename
+	fileExt := filepath.Ext(file.Filename)
+	newFileName := fmt.Sprintf("%d%s", time.Now().UnixNano(), fileExt)
+	filePath := filepath.Join("./uploads", newFileName)
+
+	if err := c.SaveFile(file, filePath); err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": "Unable to save file",
+		})
+	}
+
+	// Public URL for the saved file
+	fileURL := fmt.Sprintf("http://localhost:8080/uploads/%s", newFileName)
+	return c.JSON(fiber.Map{
+		"url": fileURL,
+	})
 }

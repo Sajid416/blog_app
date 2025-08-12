@@ -13,6 +13,6 @@ type Blog struct {
 	CreatedAt  time.Time `gorm:"type:datetime;not null" json:"created_at"`
 }
 type User struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
+	ID    uint   `json:"id"`
+	Email string `json:"email"`
 }

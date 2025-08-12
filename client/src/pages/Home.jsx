@@ -1,6 +1,14 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { DataContext } from './../context/DataContext';
+import DOMPurify from "dompurify";
+function sanitizeDetails(details) {
+  return DOMPurify.sanitize(details, {
+    ALLOWED_TAGS: ["b", "i", "em", "strong", "p", "ul", "li", "a", "br"],
+    ALLOWED_ATTR: ["href", "target", "rel"],
+    FORBID_ATTR: ["style"],
+  });
+}
 
 const Home = () => {
   const {apiData,loading}=useContext(DataContext)
@@ -46,21 +54,22 @@ const Home = () => {
             {apiData.slice(0,3).map((item,index) => (
               <div
                 key={index}
-                className="bg-gray-100 rounded-xl shadow-md hover:shadow-xl transition"
+                className="bg-gray-100 h-[300px] shadow-lg rounded-2xl hover:shadow-xl transition"
               > 
                 <img
                   src={item.imgUrl}
                   alt="Blog Cover"
-                  className="w-full h-25 object-cover"
+                  className="w-full h-25 object-cover rounded-t-2xl"
                 />
                 <h3 className="text-xl font-semibold mb-2 ml-2">{item.title}</h3>
                 <p className='text-orange-400 ml-2'>{item.category}</p>
-                <p className="text-sm text-gray-600 mb-3 line-clamp-2 ml-2">
-                  {item.details}
-                </p>
+                <div
+                      className="text-sm text-gray-600 mb-3 line-clamp-2 ml-2"
+                      dangerouslySetInnerHTML={{ __html: sanitizeDetails(item.details) }}
+                    />
                 <Link
                   to={`/details/${item.id}`}
-                  className="text-blue-600 hover:underline font-medium ml-2 pb-4"
+                  className="text-blue-600 flex justify-center items-center hover:underline font-medium ml-2 pb-4"
                 >
                   Read More →
                 </Link>

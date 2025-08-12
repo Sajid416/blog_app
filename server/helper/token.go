@@ -2,27 +2,28 @@ package helper
 
 import (
 	"log"
+	"net/http"
 	"time"
 
 	"github.com/Sajid416/blog_app/model"
+	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v5"
 )
 
-// CustomClaims includes Email and Password in JWT claims.
-// NOTE: Usually you shouldn't put password in token claims for security reasons.
+// CustomClaims includes ID and Email in JWT claims.
 type CustomClaims struct {
-	Email    string
-	Password string
+	ID    uint   `json:"id"`
+	Email string `json:"email"`
 	jwt.RegisteredClaims
 }
 
 var secret string = "secret"
 
-// GenerateToken generates a JWT token with Email and Password in claims
+// GenerateToken generates a JWT token with ID and Email in claims
 func GenerateToken(user model.User) (string, error) {
 	claims := CustomClaims{
-		Email:    user.Email,
-		Password: user.Password, // include password in token claims (not recommended in practice)
+		ID:    user.ID,
+		Email: user.Email,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 24 * 3)), // 3 days expiry
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
@@ -41,21 +42,27 @@ func GenerateToken(user model.User) (string, error) {
 	return t, nil
 }
 
-// ValidateToken parses and validates the JWT token string,
-// returning CustomClaims if valid, or error message if not.
-func ValidateToken(clientToken string) (*CustomClaims, string) {
+// ValidateToken parses and validates the JWT token string.
+// If invalid, returns a 401 response directly (Fiber style).
+func ValidateToken(c *fiber.Ctx, clientToken string) (*CustomClaims, error) {
 	token, err := jwt.ParseWithClaims(clientToken, &CustomClaims{}, func(token *jwt.Token) (interface{}, error) {
 		return []byte(secret), nil
 	})
 
 	if err != nil {
-		return nil, err.Error()
+		c.Status(http.StatusUnauthorized).JSON(fiber.Map{
+			"error": "Invalid or expired token",
+		})
+		return nil, err
 	}
 
 	claims, ok := token.Claims.(*CustomClaims)
 	if !ok || !token.Valid {
-		return nil, "Invalid token claims or token expired"
+		c.Status(http.StatusUnauthorized).JSON(fiber.Map{
+			"error": "Invalid token claims or token expired",
+		})
+		return nil, fiber.ErrUnauthorized
 	}
 
-	return claims, ""
+	return claims, nil
 }

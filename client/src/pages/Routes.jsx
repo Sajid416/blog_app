@@ -10,6 +10,10 @@ import DetailsPage from '../category/DetailsPage';
 import Login from '../auth/Login';
 import Register from '../auth/Register';
 import PrivateRoute from '../context/PrivateRoute';
+import CreateBlog from '../category/CreateBlog';
+import MyBlog from '../category/MyBlog';
+import UpdateBlog from '../category/UpdateBlog';
+import DeleteBlog from '../category/DeleteBlog';
 const router=createBrowserRouter([
     {
         path:"/",
@@ -52,8 +56,8 @@ const router=createBrowserRouter([
                 Component:Register,
             },   
             {
-                path:"/blog",
-                Component:(
+                path:"blog",
+                element:(
                     <PrivateRoute>
                     <Outlet/>
                     </PrivateRoute>
@@ -68,11 +72,11 @@ const router=createBrowserRouter([
                         Component:MyBlog,
                     },
                     {
-                        path:"/update",
+                        path:"update/:id",
                         Component:UpdateBlog,
                     },
                     {
-                        path:"/delete",
+                        path:"delete/:id",
                         Component:DeleteBlog,
                     }
                 ]

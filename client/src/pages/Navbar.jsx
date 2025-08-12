@@ -52,18 +52,17 @@ const ProfileDropdown=()=>{
       {open && (
         <div className="origin-top-right absolute right-0 mt-2 w-44 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
           <div className="py-1">
-            <a
-              href="#"
+            <Link to="blog/create"
               className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 border-b border-gray-200"
             >
               Create Blog
-            </a>
-            <a
-              href="#"
+            </Link>
+            <Link
+              to="blog/myblog"
               className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 border-b border-gray-200"
             >
               myBlog
-            </a>
+            </Link>
             <div
               className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"            
             >          

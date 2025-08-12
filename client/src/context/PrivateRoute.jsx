@@ -1,13 +1,15 @@
 import React from 'react'
-import {Navigate, useLocation } from "react-router-dom";
-const PrivateRoute = ({children}) => {
-    const token=localStorage.getItem("token")
-    const location=useLocation()
+import { Navigate, useLocation, Outlet } from "react-router-dom";
 
-   if(!token){
-    return <Navigate to="/login" state={{from:location}} replace/>
-   }
-   return children
-}
+const PrivateRoute = () => {
+  const token = localStorage.getItem("token");
+  const location = useLocation();
 
-export default PrivateRoute
+  if (!token) {
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  }
+
+  return <Outlet />;  // Outlet দিয়ে nested routes রেন্ডার করবে
+};
+
+export default PrivateRoute;

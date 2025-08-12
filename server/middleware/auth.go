@@ -1,7 +1,6 @@
 package middleware
 
 import (
-	"log"
 	"strings"
 
 	"github.com/Sajid416/blog_app/helper"
@@ -9,28 +8,22 @@ import (
 )
 
 func Authenticate(c *fiber.Ctx) error {
-	// Get token from Authorization header (prefer "Bearer <token>" pattern)
 	authHeader := c.Get("Authorization")
 	if authHeader == "" {
-		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Token not present."})
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+			"error": "Missing Authorization header",
+		})
 	}
 
-	parts := strings.Split(authHeader, " ")
-	if len(parts) != 2 || parts[0] != "Bearer" {
-		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Invalid token format"})
-	}
-	token := parts[1]
+	// Remove "Bearer " prefix
+	token := strings.TrimPrefix(authHeader, "Bearer ")
 
-	claims, msg := helper.ValidateToken(token)
-	log.Println(claims)
-
-	if msg != "" {
-		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": msg})
+	// Validate token (this will also send 401 if invalid)
+	claims, err := helper.ValidateToken(c, token)
+	if err != nil {
+		return nil // response already sent in ValidateToken
 	}
 
-	// optionally set claims data in locals for downstream handlers
 	c.Locals("userEmail", claims.Email)
-	c.Locals("userPassword", claims.Password)
-
 	return c.Next()
 }
