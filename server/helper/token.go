@@ -1,68 +1,67 @@
 package helper
 
 import (
+	"errors"
+	"fmt"
 	"log"
-	"net/http"
+	"os"
 	"time"
 
-	"github.com/Sajid416/blog_app/model"
-	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/joho/godotenv"
 )
 
-// CustomClaims includes ID and Email in JWT claims.
 type CustomClaims struct {
-	ID    uint   `json:"id"`
-	Email string `json:"email"`
+	Email  string `json:"email"`
+	UserID string `json:"userId"`
 	jwt.RegisteredClaims
 }
 
-var secret string = "secret"
+var secret string
 
-// GenerateToken generates a JWT token with ID and Email in claims
-func GenerateToken(user model.User) (string, error) {
-	claims := CustomClaims{
-		ID:    user.ID,
-		Email: user.Email,
-		RegisteredClaims: jwt.RegisteredClaims{
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 24 * 3)), // 3 days expiry
-			IssuedAt:  jwt.NewNumericDate(time.Now()),
-			Issuer:    "blog_app",
-		},
-	}
-
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-
-	t, err := token.SignedString([]byte(secret))
+func init() {
+	err := godotenv.Load()
 	if err != nil {
-		log.Println("Error in token signing:", err)
-		return "", err
+		log.Fatal("Error loading .env file")
 	}
-
-	return t, nil
+	secret = os.Getenv("JWT_SECRET") // assign once when package loads
 }
 
-// ValidateToken parses and validates the JWT token string.
-// If invalid, returns a 401 response directly (Fiber style).
-func ValidateToken(c *fiber.Ctx, clientToken string) (*CustomClaims, error) {
-	token, err := jwt.ParseWithClaims(clientToken, &CustomClaims{}, func(token *jwt.Token) (interface{}, error) {
+// GenerateToken নতুন token তৈরি করবে
+func GenerateToken(email, userId string) (string, error) {
+	claims := CustomClaims{
+		Email:  email,
+		UserID: userId,
+		RegisteredClaims: jwt.RegisteredClaims{
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 72)), // ৩ দিন মেয়াদ
+			IssuedAt:  jwt.NewNumericDate(time.Now()),
+		},
+	}
+	fmt.Println("Generating token for:", email, userId)
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	return token.SignedString([]byte(secret))
+}
+
+// ValidateToken token verify করবে
+func ValidateToken(tokenString string) (*CustomClaims, error) {
+	if tokenString == "" {
+		return nil, errors.New("token is empty")
+	}
+
+	// Parse token with claims
+	token, err := jwt.ParseWithClaims(tokenString, &CustomClaims{}, func(token *jwt.Token) (interface{}, error) {
 		return []byte(secret), nil
 	})
-
 	if err != nil {
-		c.Status(http.StatusUnauthorized).JSON(fiber.Map{
-			"error": "Invalid or expired token",
-		})
 		return nil, err
 	}
 
 	claims, ok := token.Claims.(*CustomClaims)
 	if !ok || !token.Valid {
-		c.Status(http.StatusUnauthorized).JSON(fiber.Map{
-			"error": "Invalid token claims or token expired",
-		})
-		return nil, fiber.ErrUnauthorized
+		return nil, errors.New("invalid token claims")
 	}
 
+	fmt.Println("Token validated. Claims:", claims.UserID, claims.Email)
 	return claims, nil
 }

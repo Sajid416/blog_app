@@ -1,6 +1,8 @@
 package model
 
-import "time"
+import (
+	"time"
+)
 
 type Blog struct {
 	ID         uint      `json:"id" gorm:"primary Key"`
@@ -10,9 +12,10 @@ type Blog struct {
 	Details    string    `json:"details" gorm:"not null;column:details;size:1000"`
 	AuthorImg  string    `json:"authorImg" gorm:"not null;column:authorImg;size:255"`
 	AuthorName string    `json:"authorName" gorm:"not null;column:authorName;size:255"`
+	AuthorID   string    `json:"authorId" gorm:"size:36;not null"`
 	CreatedAt  time.Time `gorm:"type:datetime;not null" json:"created_at"`
 }
 type User struct {
-	ID    uint   `json:"id"`
-	Email string `json:"email"`
+	UserID string `json:"userId" gorm:"primaryKey;size:36 not null"`
+	Email  string `json:"email"`
 }

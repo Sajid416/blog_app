@@ -52,27 +52,44 @@ func BlogDetails(c *fiber.Ctx) error {
 	return c.JSON(context)
 
 }
+func MyBlogs(c *fiber.Ctx) error {
+	userID := c.Locals("userId").(string)
+	fmt.Println("UserID from middleware:", userID)
+	var blogs []model.Blog
+	result := database.DBConn.Where("author_id = ?", userID).Find(&blogs)
+	if result.Error != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Database error"})
+	}
+
+	return c.JSON(blogs)
+}
+
+func GetOne(c *fiber.Ctx) error {
+	id := c.Params("id")
+	var record model.Blog
+	database.DBConn.First(&record, id)
+	if record.ID == 0 {
+		return c.Status(404).JSON(fiber.Map{"Error": "Blog not found"})
+	}
+	return c.Status(200).JSON(record)
+}
 
 func BlogCreate(c *fiber.Ctx) error {
-	context := fiber.Map{
-		"StatusText": "OK",
-		"Message":    "Add Blog",
-	}
-	record := new(model.Blog)
+	var blog model.Blog
 
-	if err := c.BodyParser(&record); err != nil {
-		log.Println("Error in parsing request")
-		context["Message"] = "Something went wrong"
+	if err := c.BodyParser(&blog); err != nil {
+		return c.Status(400).JSON(fiber.Map{"error": err.Error()})
 	}
-	result := database.DBConn.Create(record)
-	if result.Error != nil {
-		log.Println("Error in saving record")
-		context["Message"] = "Something went wrong"
+	fmt.Println(blog)
+	// এখানে authorId token থেকে নেবো, ফর্ম ডাটা থেকে না
+	authorID := c.Locals("userId") // middleware.Authenticate এ সেট করা হয়েছে
+	blog.AuthorID = authorID.(string)
+	fmt.Println(authorID)
+	if err := database.DBConn.Create(&blog).Error; err != nil {
+		return c.Status(500).JSON(fiber.Map{"error": err.Error()})
 	}
-	context["Message"] = "Data is saved successfully"
-	context["Data"] = record
-	c.Status(200)
-	return c.JSON(context)
+
+	return c.Status(201).JSON(blog)
 }
 func BlogUpdate(c *fiber.Ctx) error {
 	context := fiber.Map{

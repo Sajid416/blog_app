@@ -1,29 +1,46 @@
 package middleware
 
 import (
+	"log"
 	"strings"
 
 	"github.com/Sajid416/blog_app/helper"
 	"github.com/gofiber/fiber/v2"
 )
 
+// Authenticate middleware checks JWT token from Authorization header
 func Authenticate(c *fiber.Ctx) error {
-	authHeader := c.Get("Authorization")
-	if authHeader == "" {
+	// Get token from Authorization header
+	token := c.Get("Authorization")
+	if token == "" {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-			"error": "Missing Authorization header",
+			"error": "Token not found",
 		})
 	}
 
-	// Remove "Bearer " prefix
-	token := strings.TrimPrefix(authHeader, "Bearer ")
-
-	// Validate token (this will also send 401 if invalid)
-	claims, err := helper.ValidateToken(c, token)
-	if err != nil {
-		return nil // response already sent in ValidateToken
+	// Remove "Bearer " prefix if present
+	if strings.HasPrefix(token, "Bearer ") {
+		token = strings.TrimPrefix(token, "Bearer ")
+		token = strings.TrimSpace(token) // optional: remove extra spaces
 	}
 
-	c.Locals("userEmail", claims.Email)
+	// Validate the token
+	claims, err := helper.ValidateToken(token)
+	if err != nil {
+		log.Println("Invalid token:", err)
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+			"error": "Invalid token",
+		})
+	}
+
+	// Log info for debugging
+	log.Println("Authenticate middleware called")
+	log.Println("Claims:", claims.UserID, claims.Email)
+
+	// Store user info in context for future handlers
+	c.Locals("userId", claims.UserID)
+	c.Locals("email", claims.Email)
+
+	// Continue to next middleware/handler
 	return c.Next()
 }

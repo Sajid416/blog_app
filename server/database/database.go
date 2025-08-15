@@ -14,7 +14,7 @@ var DBConn *gorm.DB
 
 func ConnectDB() {
 
-	dsn := os.Getenv("dsn")
+	dsn := os.Getenv("DSN")
 
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{Logger: logger.Default.LogMode(logger.Error)})
 	if err != nil {
