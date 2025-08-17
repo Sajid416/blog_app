@@ -74,6 +74,16 @@ func GetOne(c *fiber.Ctx) error {
 	return c.Status(200).JSON(record)
 }
 
+func SearchBlog(c *fiber.Ctx) error {
+	query := c.Query("title")
+	var blogs []model.Blog
+	if err := database.DBConn.Where("title LIKE ?", "%"+query+"%").Find(&blogs).Limit(5).Error; err != nil {
+		return c.Status(500).JSON(fiber.Map{"Error": "Error in fatching blog"})
+	}
+	return c.JSON(blogs)
+
+}
+
 func BlogCreate(c *fiber.Ctx) error {
 	var blog model.Blog
 
