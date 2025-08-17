@@ -14,6 +14,7 @@ func SetUpRoutes(app *fiber.App) {
 	// delete=> delete
 	app.Get("/", controller.BlogList)
 	app.Get("/:id", controller.BlogDetails)
+	app.Get("blogs/search", controller.SearchBlog)
 	private := app.Group("/api")
 	private.Use(middleware.Authenticate)
 	private.Post("/", controller.BlogCreate)
