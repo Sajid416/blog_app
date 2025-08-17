@@ -3,17 +3,20 @@ import { NavLink } from "react-router-dom";
 import { FaFacebook } from "react-icons/fa6";
 import { CiTwitter } from "react-icons/ci";
 import { FaWhatsapp } from "react-icons/fa";
-
+import { IoMdMenu } from "react-icons/io";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { DataContext } from "../context/DataContext";
 import Logout from '../auth/LogoutButton';
 import LogoutButton from './../auth/LogoutButton';
+import NavMenu from "./navmenu";
+import { MdOutlineCancel } from "react-icons/md";
+
 
 const ProfileDropdown=()=>{
   const [open, setOpen] = useState(false);
-  const dropdownRef = useRef(null);
   
+  const dropdownRef = useRef(null);
   // Close dropdown if clicked outside
   useEffect(() => {
     function handleClickOutside(event) {
@@ -53,17 +56,20 @@ const ProfileDropdown=()=>{
         <div className="origin-top-right absolute right-0 mt-2 w-44 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
           <div className="py-1">
             <Link to="blog/create"
+              onClick={()=>setOpen(!open)}
               className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 border-b border-gray-200"
             >
               Create Blog
             </Link>
             <Link
               to="blog/myblog"
+              onClick={()=>setOpen(!open)}
               className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 border-b border-gray-200"
             >
               myBlog
             </Link>
             <div
+             onClick={()=>setOpen(!open)}
               className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"            
             >          
               <LogoutButton/>           
@@ -78,6 +84,7 @@ const ProfileDropdown=()=>{
 
 
 const Navbar = () => {  
+  const {menu,setMenu}=useContext(DataContext)
   const {isLoggedIn}=useContext(DataContext)
   const list = [
     { item: "Home", url: "/" },
@@ -87,13 +94,13 @@ const Navbar = () => {
     { item: "Contact", url: "contact" },
   ];
   return (
-    <div className="max-w-full font-roboto-serif bg-black">
+    <div className="max-w-full font-roboto-serif bg-black relative">
       <div className="max-w-full px-10 py-6 flex justify-between items-center ">
         <h1 className=" text-3xl text-amber-50 text-center py-2 font-pacifico">
           Blog<span className="text-orange-600">Verse</span>
         </h1>
 
-        <ul className="flex justify-center items-center gap-6  text-white font-semibold cursor-pointer ">
+        <ul className="justify-center items-center gap-6  text-white font-semibold cursor-pointer hidden md:flex ">
           {list.map((item, ind) => (
             <li key={item.url}>
               <NavLink
@@ -109,8 +116,8 @@ const Navbar = () => {
             </li>
           ))}
         </ul>
-        <div className="flex space-x-2 items-center justify-center">
-          <div className="flex text-white space-x-2 text-md">
+        <div className="flex space-x-2 items-center justify-center ">
+          <div className=" text-white space-x-2 text-md hidden md:flex">
             <FaFacebook />
             <CiTwitter />
             <FaWhatsapp />
@@ -118,15 +125,47 @@ const Navbar = () => {
           {!isLoggedIn ? (
             <div>
               <Link to="login">
-              <button className="bg-orange-500 text-white font-semibold cursor-pointer rounded-md hover:bg-orange-400 transition px-3 py-1">
+              <button className=" hidden bg-orange-500 text-white font-semibold cursor-pointer rounded-md hover:bg-orange-400 transition px-3 py-1 md:flex">
                 Login
               </button>
               </Link>
               
+              
             </div>
           ) : (
-             <ProfileDropdown/>           
+             <div className="hidden md:flex">
+              <ProfileDropdown/> 
+             </div>          
           )}
+            <div className="flex flex-col gap-5 justify-between items-center md:hidden">
+
+            {
+              menu? (            
+                <div className="ml-20">
+               <IoMdMenu className="text-white text-2xl mr-0" onClick={()=>setMenu(!menu)}/>   
+                        
+              </div>
+               
+              ):(
+
+                <div className="ml-20">
+                  <MdOutlineCancel className="text-white text-2xl mr-0" onClick={()=>setMenu(!menu)}/>                 
+                </div>
+                
+              )
+            }     
+            {
+              !menu && <div className="absolute w-[140px] p-2 flex justify-center bg-white top-26 right-1 font-roboto-serif shadow-md rounded-md">
+              <NavMenu/> 
+              </div>
+            }        
+             
+              <div className="flex text-white space-x-2 text-md ml-20 mb-0">
+            <FaFacebook />
+            <CiTwitter />
+            <FaWhatsapp />
+          </div>
+          </div>
         </div>
       </div>
     </div>

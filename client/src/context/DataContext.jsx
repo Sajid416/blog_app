@@ -6,7 +6,7 @@ export const DataProvider = ({ children }) => {
   const [apiData, setApiData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
+  const [menu,setMenu]=useState(false)
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -51,7 +51,7 @@ export const DataProvider = ({ children }) => {
   }, [fetchData]);
   return (
     <DataContext.Provider
-      value={{ apiData, loading,fetchData, isLoggedIn, setIsLoggedIn }}
+      value={{ apiData, loading,fetchData, isLoggedIn, setIsLoggedIn,menu,setMenu }}
     >
       {children}
     </DataContext.Provider>

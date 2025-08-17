@@ -8,14 +8,14 @@ const Footer = () => {
       <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
         {/* Logo and Tagline */}
         <div className=''>
-          <h2 className="text-2xl font-bold mb-2 font-pacifico">BlogVerse</h2>
+          <h2 className="text-2xl font-bold mb-2 font-pacifico text-center">BlogVerse</h2>
           <p className="text-sm text-gray-400">
             A universe of where diverse ideas and stories come alive through engaging blog posts. It connects readers with insightful content across tech, food, lifestyle, and more. Explore, learn, and share your passion with BlogVerse!
           </p>
         </div>
 
         {/* Quick Links */}
-        <div>
+        <div className='flex flex-col justify-center items-center'>
           <h3 className="text-lg font-semibold mb-3">Quick Links</h3>
           <ul className="space-y-2 text-sm">
             <li><Link to="/" className="hover:underline text-gray-300">Home</Link></li>
@@ -26,7 +26,7 @@ const Footer = () => {
         </div>
 
         {/* Social Media */}
-        <div>
+        <div className='flex flex-col justify-center items-center'>
           <h3 className="text-lg font-semibold mb-3">Follow Us</h3>
           <div className="flex gap-4 text-gray-300 text-xl">
             <a href="#" className="hover:text-white"><FaFacebookF /></a>

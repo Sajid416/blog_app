@@ -23,31 +23,31 @@ const About = () => {
     .sort((a, b) => b.publicationCount - a.publicationCount);
 
   return (
-    <div className="p-10 pt-3 pl-20">
-      <div className="flex flex-col">
+    <div className="p-10 pt-3 pl-5 md:pl-15 ">
+      <div className="flex flex-col mr-5">
         <h2 className="text-center font-bold text-2xl font-pacifico p-2 mb-20">
           About Us
         </h2>
-        <div className="flex flex-row gap-7">
-          <div className="w-[800px] h-[280px] oveflow-hidden ">
+        <div className="flex flex-col  md:flex-row gap-7">
+          <div className="w-[800px] h-[280px] overflow-hidden ">
             <img
               src={img}
               alt="about"
-              className="w-full h-full object-cover rounded-lg"
+              className="w-[430px] md:w-full h-full object-cover rounded-lg"
             />
           </div>
           <div className="w-[1000px] flex flex-col gap-2">
-            <h3 className="text-red-700 text-xl">Who we are ?</h3>
-            <h1 className="text-2xl font-bold font-roboto-serif">
+            <h3 className="text-red-700 text-lg md:text-xl">Who we are ?</h3>
+            <h1 className="text-xl md:text-2xl font-bold font-roboto-serif">
               We provide high quality articles & blogs
             </h1>
-            <p>
+            <p className="text-sm md:text-md text-justify w-[430px] md:w-[500px]">
               Lorem ipsum dolor sit, amet consectetur adipisicing elit.
               Provident mollitia, ad sunt facere accusamus, numquam error culpa
               atque beatae, reprehenderit cum? Odio hic nam perspiciatis
               deleniti, aut neque sunt quidem.
             </p>
-            <p>
+            <p className="text-sm md:text-md text-justify w-[430px] md:w-[500px]">
               Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ad in
               expedita dolores nesciunt dolor, ratione vero laudantium
               voluptates dolorem illo quaerat at voluptatem eos nulla sequi
@@ -56,12 +56,12 @@ const About = () => {
           </div>
         </div>
         <div className="flex flex-col gap-5">
-          <div className="pt-10 text-3xl text-bold">
+          <div className="pt-10 text-2xl md:text-3xl text-bold">
             <h1>Top Authors</h1>
           </div>
           <div className="border-b-1 border-b-gray-300"></div>
           <div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6 p-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-10 p-4">
               {result.slice(0,3).map((item, index) => (
                 <div
                   key={index}
