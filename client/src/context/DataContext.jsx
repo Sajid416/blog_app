@@ -6,7 +6,7 @@ export const DataProvider = ({ children }) => {
   const [apiData, setApiData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [menu,setMenu]=useState(false)
+  const [menu,setMenu]=useState(true)
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {

@@ -9,12 +9,12 @@ import { Link } from "react-router-dom";
 import { DataContext } from "../context/DataContext";
 import Logout from '../auth/LogoutButton';
 import LogoutButton from './../auth/LogoutButton';
-import NavMenu from "./navmenu";
+import NavMenu from "./NavMenu.jsx";
 import { MdOutlineCancel } from "react-icons/md";
 
 
 const ProfileDropdown=()=>{
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   
   const dropdownRef = useRef(null);
   // Close dropdown if clicked outside
@@ -155,7 +155,7 @@ const Navbar = () => {
               )
             }     
             {
-              !menu && <div className="absolute w-[140px] p-2 flex justify-center bg-white top-26 right-1 font-roboto-serif shadow-md rounded-md">
+              !menu && <div className="absolute w-[140px] flex justify-center bg-gray-200 top-26 right-1 font-roboto-serif shadow-md rounded-md">
               <NavMenu/> 
               </div>
             }        

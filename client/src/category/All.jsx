@@ -54,7 +54,7 @@ const SearchBar = React.memo(({ query, setQuery, suggestions, setSuggestions, se
           placeholder="Search blog by title"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="flex-grow rounded-l-md border border-gray-300 px-3 py-2 text-gray-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
+          className="bg-white flex-grow rounded-l-md border border-gray-300 px-3 py-2 text-gray-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
         />
 
         <button

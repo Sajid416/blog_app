@@ -22,7 +22,7 @@ func init() {
 func main() {
 	sqlDB, err := database.DBConn.DB()
 	if err != nil {
-		log.Println("Error in database Connection.")
+		log.Panicf("Error in database connection: %v", err)
 	}
 	defer sqlDB.Close()
 
@@ -36,7 +36,7 @@ func main() {
 
 	// ✅ CORS middleware setup
 	router.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"*"},
+		AllowOrigins:     []string{"https://blog-deploy-k4g36s963-sajid416s-projects.vercel.app"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},

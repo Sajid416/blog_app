@@ -21,8 +21,8 @@ const ProfileDropdown=()=>{
   return (
     <div className="relative inline-block text-left" ref={dropdownRef}>
       <button
-        onClick={() => setOpen(!open)}
-        className="inline-flex justify-center w-full rounded-md hover:font-bold shadow-sm px-4 py-2 bg-orange-500 text-sm font-medium text-white hover:bg-orange-600 focus:outline-none"
+        onClick={() => {setOpen(!open)}}
+        className="inline-flex justify-center w-full rounded-md hover:font-bold shadow-sm px-4 py-2 bg-orange-500 text-sm font-medium mb-2 text-white hover:bg-orange-600 focus:outline-none"
         aria-expanded={open}
         aria-haspopup="true"
       >
@@ -46,20 +46,20 @@ const ProfileDropdown=()=>{
         <div className="origin-top-right absolute right-0 mt-2 w-44 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
           <div className="py-1">
             <Link to="blog/create"
-              onClick={()=>{setOpen(!open);setMenu(!menu);}}
+              onClick={()=>{setOpen(!open);setMenu(true);}}
               className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 border-b border-gray-200"
             >
               Create Blog
             </Link>
             <Link
               to="blog/myblog"
-               onClick={()=>{setOpen(!open);setMenu(!menu);}}
+               onClick={()=>{setOpen(!open);setMenu(true);}}
               className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 border-b border-gray-200"
             >
               myBlog
             </Link>
             <div
-              onClick={()=>{setOpen(!open);setMenu(!menu);}}
+              onClick={()=>{setOpen(!open);setMenu(true);}}
               className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"            
             >          
               <LogoutButton/>         
@@ -90,8 +90,8 @@ const NavMenu = () => {
               <NavLink
               key={index}
               to={item.url}
-              onClick={()=>setMenu(!menu)}
-              className={"p-1 px-10 py-2 hover:bg-gray-50 cursor-pointer hover:transition text-gray-600 font-bold hover:shadow-md transition-all duration-300 ease-in-out transform hover:scale-110 hover:text-violet-600"}>
+              onClick={()=>setMenu(true)}
+              className={"p-1 px-10 py-2 hover:bg-white cursor-pointer hover:transition text-gray-600 rounded-md font-bold hover:shadow-md"}>
                 {item.item}
               </NavLink>                  
           ))
@@ -99,7 +99,7 @@ const NavMenu = () => {
          {!isLoggedIn ? (
             <div>
               <Link to="login" >
-              <button onClick={()=>setMenu(!menu)}  className=" flex ml-8 bg-orange-500 text-white font-semibold cursor-pointer rounded-md hover:bg-orange-400 transition px-4 mb-2 mt-2 py-1 md:hidden">
+              <button onClick={()=>setMenu(true)}  className=" flex ml-8 bg-orange-500 text-white font-semibold cursor-pointer rounded-md hover:bg-orange-400 transition px-4 mb-2 mt-2 py-1 md:hidden">
                 Login
               </button>
               </Link>            
