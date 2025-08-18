@@ -187,7 +187,7 @@ func UploadImage(c *fiber.Ctx) error {
 	}
 
 	// Public URL for the saved file
-	fileURL := fmt.Sprintf("http://localhost:8080/uploads/%s", newFileName)
+	fileURL := fmt.Sprintf(`https://blog-blogapi-service.onrender.com/uploads/%s`, newFileName)
 	return c.JSON(fiber.Map{
 		"url": fileURL,
 	})
